@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { AFTER_HOOK_MASK, BEFORE_HOOK_MASK } from "src/core/BaseVault.sol";
 import { HookCallType } from "src/core/Types.sol";

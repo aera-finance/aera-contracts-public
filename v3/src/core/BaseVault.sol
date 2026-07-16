@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { CallbackHandler } from "src/core/CallbackHandler.sol";
 
@@ -16,7 +16,6 @@ import { Authority } from "@solmate/auth/Auth.sol";
 
 import { Auth2Step } from "src/core/Auth2Step.sol";
 import {
-    ADDRESS_SIZE_BITS,
     AFTER_HOOK_MASK,
     BEFORE_HOOK_MASK,
     CONFIGURABLE_HOOKS_LENGTH_MASK,
@@ -91,7 +90,7 @@ contract BaseVault is IBaseVault, Pausable, CallbackHandler, ReentrancyGuardTran
         _;
     }
 
-    constructor() Pausable() Auth2Step(msg.sender, Authority(address(0))) {
+    constructor() Auth2Step(msg.sender, Authority(address(0))) {
         // Interactions: get initialization parameters from the factory
         BaseVaultParameters memory params = IBaseVaultFactory(msg.sender).baseVaultParameters();
 

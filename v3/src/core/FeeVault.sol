@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { IERC20 } from "@oz/interfaces/IERC20.sol";
 import { SafeERC20 } from "@oz/token/ERC20/utils/SafeERC20.sol";
@@ -47,7 +47,7 @@ abstract contract FeeVault is IFeeVault, BaseVault {
         _;
     }
 
-    constructor() BaseVault() {
+    constructor() {
         // Interactions: get the fee vault parameters
         FeeVaultParameters memory params = IFeeVaultDeployer(msg.sender).feeVaultParameters();
 

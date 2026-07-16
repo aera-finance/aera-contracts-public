@@ -1,16 +1,9 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { TransientSlot } from "@oz/utils/TransientSlot.sol";
 
-import {
-    ADDRESS_SIZE_BITS,
-    CALLBACK_DATA_OFFSET,
-    NO_CALLBACK_DATA,
-    SELECTOR_OFFSET,
-    // solhint-disable-next-line no-unused-import
-    WORD_SIZE
-} from "src/core/Constants.sol";
+import { ADDRESS_SIZE_BITS, CALLBACK_DATA_OFFSET, NO_CALLBACK_DATA, SELECTOR_OFFSET } from "src/core/Constants.sol";
 import { Approval } from "src/core/Types.sol";
 import { ICallbackHandler } from "src/core/interfaces/ICallbackHandler.sol";
 

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { IERC20 } from "@oz/interfaces/IERC20.sol";
 import { SafeERC20 } from "@oz/token/ERC20/utils/SafeERC20.sol";
@@ -16,8 +16,6 @@ import { ISingleDepositorVault } from "src/core/interfaces/ISingleDepositorVault
 /// @dev Fee logic is inherited from the fee vault and support for guardians is inherited from the BaseVault
 contract SingleDepositorVault is ISingleDepositorVault, FeeVault {
     using SafeERC20 for IERC20;
-
-    constructor() FeeVault() { }
 
     ////////////////////////////////////////////////////////////
     //              Public / External Functions               //

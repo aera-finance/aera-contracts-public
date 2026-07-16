@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { IERC20 } from "@oz/interfaces/IERC20.sol";
 import { ERC20 } from "@oz/token/ERC20/ERC20.sol";
@@ -10,7 +10,7 @@ import { FeeVault } from "src/core/FeeVault.sol";
 import { IBeforeTransferHook } from "src/core/interfaces/IBeforeTransferHook.sol";
 import { IMultiDepositorVault } from "src/core/interfaces/IMultiDepositorVault.sol";
 import { IMultiDepositorVaultFactory } from "src/core/interfaces/IMultiDepositorVaultFactory.sol";
-import { IProvisioner } from "src/core/interfaces/IProvisioner.sol";
+import { IProvisionerV2 } from "src/core/interfaces/IProvisionerV2.sol";
 
 /// @title MultiDepositorVault
 /// @notice A vault that allows users to deposit and withdraw multiple tokens. This contract just mints and burns unit
@@ -44,7 +44,6 @@ contract MultiDepositorVault is IMultiDepositorVault, ERC20, FeeVault {
             IMultiDepositorVaultFactory(msg.sender).getERC20Name(),
             IMultiDepositorVaultFactory(msg.sender).getERC20Symbol()
         )
-        FeeVault()
     {
         // Interactions: get the before transfer hook contract
         IBeforeTransferHook beforeTransferHook_ =
@@ -123,7 +122,7 @@ contract MultiDepositorVault is IMultiDepositorVault, ERC20, FeeVault {
         // from == address(0) is to allow minting further units for user with locked units
         // to == address(0) is to allow burning units in refundDeposit
         require(
-            from == address(0) || to == address(0) || !IProvisioner(provisioner).areUserUnitsLocked(from),
+            from == address(0) || to == address(0) || !IProvisionerV2(provisioner).areUserUnitsLocked(from),
             Aera__UnitsLocked()
         );
 

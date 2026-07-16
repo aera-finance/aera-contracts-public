@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { MultiDepositorVault } from "src/core/MultiDepositorVault.sol";
 import { IVaultDeployDelegate } from "src/core/interfaces/IVaultDeployDelegate.sol";

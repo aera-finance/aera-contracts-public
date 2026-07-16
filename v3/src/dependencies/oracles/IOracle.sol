@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 /// @dev Implements the spec at https://eips.ethereum.org/EIPS/eip-7726
 interface IOracle {
