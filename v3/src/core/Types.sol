@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { IERC20 } from "@oz/interfaces/IERC20.sol";
 import { Authority } from "@solmate/auth/Auth.sol";
@@ -19,7 +19,6 @@ enum RequestType {
     REDEEM_AUTO_PRICE, // 01: redeem, auto price
     DEPOSIT_FIXED_PRICE, // 10: deposit, fixed price
     REDEEM_FIXED_PRICE // 11: redeem, fixed price
-
 }
 
 /// @notice Type of return value: no return, static return, dynamic return
@@ -201,12 +200,14 @@ struct TargetCalldata {
 }
 
 /// @notice Vault price information and configuration
-struct VaultPriceState {
+struct VaultPriceStateV2 {
     /// @notice Whether vault price updates are paused
     bool paused;
+    /// @notice Whether policy-violating anchor updates pause (`true`) or revert (`false`)
+    bool pauseOnBadAnchorUpdate;
     /// @notice Maximum age of price data in seconds before it is considered stale
-    uint8 maxPriceAge;
-    /// @notice Minimum time between price updates in minutes
+    uint16 maxPriceAge;
+    /// @notice Minimum time between anchor updates in minutes
     uint16 minUpdateIntervalMinutes;
     /// @notice Maximum allowed price increase ratio in basis points
     uint16 maxPriceToleranceRatio;
@@ -214,30 +215,47 @@ struct VaultPriceState {
     uint16 minPriceToleranceRatio;
     /// @notice Maximum allowed delay in price updates in days
     uint8 maxUpdateDelayDays;
-    /// @notice Timestamp of last price update
-    uint32 timestamp;
-    /// @notice Seconds between last fee accrual and last price update
-    uint24 accrualLag;
-    /// @notice Current unit price
-    uint128 unitPrice;
-    /// @notice Highest historical unit price
+    /// @notice Seconds between last fee accrual and last anchor update
+    uint32 accrualLag;
+    /// @notice Timestamp of last anchor update
+    uint32 anchorTimestamp;
+    /// @notice Timestamp of last drift update
+    uint32 driftTimestamp;
+    /// @notice Current anchor price
+    uint128 anchorPrice;
+    /// @notice Current drift price
+    uint128 driftPrice;
+    /// @notice Highest historical price
     uint128 highestPrice;
     /// @notice Total supply at last price update
     uint128 lastTotalSupply;
 }
 
-/// @notice Token configuration for deposits and redemptions
-struct TokenDetails {
+/// @notice Full token configuration stored on-chain
+struct TokenDetailsV2 {
     /// @notice Whether async deposits are enabled
     bool asyncDepositEnabled;
     /// @notice Whether async redemptions are enabled
     bool asyncRedeemEnabled;
     /// @notice Whether sync deposits are enabled
     bool syncDepositEnabled;
-    /// @notice Premium multiplier applied to deposits in basis points (9999 = 0.1% premium)
-    uint16 depositMultiplier;
-    /// @notice Premium multiplier applied to redemptions in basis points (9999 = 0.1% premium)
-    uint16 redeemMultiplier;
+    /// @notice Whether sync redeems are enabled
+    bool syncRedeemEnabled;
+    /// @notice Premium multiplier for async deposits in basis points (9999 = 0.1% premium)
+    uint16 asyncDepositMultiplier;
+    /// @notice Premium multiplier for async redeems in basis points (9999 = 0.1% premium)
+    uint16 asyncRedeemMultiplier;
+    /// @notice Premium multiplier for sync deposits in basis points (9999 = 0.1% premium)
+    uint16 syncDepositMultiplier;
+    /// @notice Premium multiplier for sync redeems in basis points (9999 = 0.1% premium)
+    /// @dev Used as per-token flat premium component for sync redeem
+    uint16 syncRedeemMultiplier;
+    /// @notice SSTORE2 pointer for push-funds submit data
+    /// @dev address(0) means push-funds is disabled for that token
+    address pushFundsSubmitDataPointer;
+    /// @notice SSTORE2 pointer for pull-funds submit data
+    /// @dev address(0) means pull-funds is disabled for that token
+    address pullFundsSubmitDataPointer;
 }
 
 /// @notice Request parameters for deposits and redemptions
@@ -248,11 +266,13 @@ struct TokenDetails {
 /// - For redemptions:
 ///   - units: amount of units the user is redeeming (unitsIn)
 ///   - tokens: minimum tokens the user wants to receive (minTokensOut)
-struct Request {
+struct RequestV2 {
     /// @notice Request type(deposit/redeem + auto/fixed price)
     RequestType requestType;
     /// @notice User address making the request
     address user;
+    /// @notice Address that gets units/tokens when the order is solved
+    address receiver;
     /// @notice Amount of vault units
     uint256 units;
     /// @notice Amount of underlying tokens

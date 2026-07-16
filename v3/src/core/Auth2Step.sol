@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { Auth, Authority } from "@solmate/auth/Auth.sol";
 import { IAuth2Step } from "src/core/interfaces/IAuth2Step.sol";
@@ -18,7 +18,7 @@ contract Auth2Step is IAuth2Step, Auth {
     //                       Modifiers                        //
     ////////////////////////////////////////////////////////////
 
-    modifier onlyOwner() virtual {
+    modifier onlyOwner() {
         require(msg.sender == owner, Aera__Unauthorized());
         _;
     }

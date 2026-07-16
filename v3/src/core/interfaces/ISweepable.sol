@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 /// @title ISweepable
 /// @notice Interface for contracts that can recover tokens to a designated recipient

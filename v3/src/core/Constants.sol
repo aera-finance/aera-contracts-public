@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 ////////////////////////////////////////////////////////////
 //                    Memory & Calldata                   //
@@ -121,11 +121,8 @@ uint256 constant ONE_DAY = 1 days;
 //                   Provisioner Constants                //
 ////////////////////////////////////////////////////////////
 
-/// @dev Minimum deposit multiplier 50%
-uint256 constant MIN_DEPOSIT_MULTIPLIER = 5000;
-
-/// @dev Minimum redeem multiplier 50%
-uint256 constant MIN_REDEEM_MULTIPLIER = 5000;
+/// @dev Minimum multiplier 50% (applies to all deposit and redeem multipliers)
+uint256 constant MIN_MULTIPLIER = 5000;
 
 /// @dev Deposit/Redeem flag in RequestType enum
 uint256 constant DEPOSIT_REDEEM_FLAG = 1;

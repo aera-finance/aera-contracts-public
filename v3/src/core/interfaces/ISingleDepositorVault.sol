@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { OperationPayable, TokenAmount } from "src/core/Types.sol";
 import { IFeeVault } from "src/core/interfaces/IFeeVault.sol";

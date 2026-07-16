@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 import { IERC20 } from "@oz/interfaces/IERC20.sol";
 import { IFeeCalculator } from "src/core/interfaces/IFeeCalculator.sol";

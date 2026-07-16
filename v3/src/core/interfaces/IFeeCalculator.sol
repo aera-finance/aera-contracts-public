@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BUSL-1.1
-pragma solidity 0.8.29;
+pragma solidity 0.8.34;
 
 /// @title IFeeCalculator
 /// @notice Interface for a contract that calculates fees for a vault and protocol
